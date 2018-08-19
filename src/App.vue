@@ -75,7 +75,7 @@ export default {
         if (subscription) {
           return subscription
         }
-        const response = await fetch('http://localhost:3000/vapidPublicKey')
+        const response = await fetch('./vapidPublicKey')
         const vapidPublicKey = await response.text()
         const convertedVapidKey = this.urlBase64ToUint8Array(vapidPublicKey)
 
@@ -95,7 +95,7 @@ export default {
         }),
       }) */
 
-      fetch('http://localhost:3000/sendNotification', {
+      fetch('./sendNotification', {
         method: 'post',
         headers: {
           'Content-type': 'application/json'
