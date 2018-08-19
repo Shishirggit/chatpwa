@@ -10,12 +10,12 @@ self.addEventListener('push', function(e) {
         {
           action: 'explore',
           title: 'Explore this new world',
-          icon: 'static/img/checkmark.png'
+          icon: '/static/img/icons/checkmark.png'
         },
         {
           action: 'close',
           title: 'Close',
-          icon: 'static/img/xmark.png'
+          icon: '/static/img/icons/xmark.png'
         },
       ]
     }

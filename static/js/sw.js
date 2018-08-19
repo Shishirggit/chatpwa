@@ -10,12 +10,12 @@ self.addEventListener('push', function(e) {
         {
           action: 'explore',
           title: 'Explore this new world',
-          icon: 'static/img/checkmark.png'
+          icon: '/static/img/icons/checkmark.png'
         },
         {
           action: 'close',
           title: 'Close',
-          icon: 'static/img/xmark.png'
+          icon: '/static/img/icons/xmark.png'
         },
       ]
     }
@@ -32,7 +32,7 @@ self.addEventListener('notificationclick', function(e) {
     if (action === 'close') {
       notification.close();
     } else {
-      clients.openWindow('http://localhost:5000');
+      clients.openWindow('http://google.co.in');
       notification.close();
     }
 })
