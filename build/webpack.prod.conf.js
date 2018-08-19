@@ -105,6 +105,11 @@ const webpackConfig = merge(baseWebpackConfig, {
       staticFileGlobs: ['dist/**/*.{js,html,css}'],
       minify: true,
       stripPrefix: 'dist/',
+      importScripts:[
+        {
+          filename:'static/js/sw.js'
+        }
+      ],
       runtimeCaching: [
         {
           urlPattern: /^https:\/\/fonts\.googleapis\.com\//,
