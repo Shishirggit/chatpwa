@@ -70,7 +70,50 @@ export default {
     }
   } */
   mounted () {
-    navigator.serviceWorker.getRegistration().then((registration) => {
+    new Promise(function (resolve, reject) {
+      Notification.requestPermission(function (result) {
+        if (result !== 'granted') {
+          return reject(Error('Denied notification permission'))
+        }
+        resolve()
+      })
+    }).then(function () {
+      return navigator.serviceWorker.ready
+    }).then((registration) => {
+      registration.sync.register('myFirstSync')
+      return registration
+    }).then((registration) => {
+      return registration.pushManager.getSubscription().then(async (subscription) => {
+        if (subscription) {
+          return subscription
+        }
+        const response = await fetch('./vapidPublicKey')
+        const vapidPublicKey = await response.text()
+        const convertedVapidKey = this.urlBase64ToUint8Array(vapidPublicKey)
+
+        return registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: convertedVapidKey
+        })
+      })
+    }).then((subscription) => {
+      fetch('./sendNotification', {
+        method: 'post',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          subscription: subscription
+        })
+      })
+    })
+    // Then later, request a one-off sync:
+    /* navigator.serviceWorker.ready.then(function (swRegistration) {
+      return swRegistration.sync.register('myFirstSync')
+    }).then(() => {
+      console.log('Sync registered')
+    }) */
+    /* navigator.serviceWorker.ready.then((registration) => {
       return registration.pushManager.getSubscription().then(async (subscription) => {
         if (subscription) {
           return subscription
@@ -93,7 +136,7 @@ export default {
         body: JSON.stringify({
           subscription: subscription
         }),
-      }) */
+      })
 
       fetch('./sendNotification', {
         method: 'post',
@@ -104,7 +147,7 @@ export default {
           subscription: subscription
         })
       })
-    })
+    }) */
   },
   methods: {
     urlBase64ToUint8Array (base64String) {

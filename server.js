@@ -37,6 +37,13 @@ app.get('/vapidPublicKey', function(req, res) {
   res.send(process.env.VAPID_PUBLIC_KEY);
 });
 
+app.get('/backgroundSync', function(req, res) {
+  setTimeout(function() {
+    res.send(process.env.VAPID_PUBLIC_KEY)
+  }, 20000)  
+});
+
+
 app.post('/sendNotification', function(req, res) {
   const subscription = req.body.subscription;
   setTimeout(function() {

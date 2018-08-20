@@ -36,3 +36,23 @@ self.addEventListener('notificationclick', function(e) {
       notification.close();
     }
 })
+
+self.addEventListener('sync', function(event) {
+  console.log('firing: sync');
+  if (event.tag == 'myFirstSync') {
+    event.waitUntil(fetchData ());
+  }
+});
+
+function fetchData () {
+  console.log('firing: fetchImage()')
+  fetch('./backgroundSync').then(function (response) {
+    return response
+  })
+  .then(function (text) {
+    console.log('Request successful', text)
+  })
+  .catch(function (error) {
+    console.log('Request failed', error)
+  })
+}
